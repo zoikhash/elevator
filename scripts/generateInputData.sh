@@ -13,12 +13,12 @@ Usage:
                        [--busyPeriod START:END:MULTIPLIER ...]
 
 Required:
-  --nPassengerIds N             Size of the passenger ID pool (at least 1).
-  --nFloors N                   Number of floors (at least 2), numbered 0 to N-1.
-  --simulationLength N          Number of time steps (at least 1), numbered 0 to N-1.
+  --nPassengerIds N            Size of the passenger ID pool (at least 1).
+  --nFloors N                  Number of floors (at least 2), numbered 0 to N-1.
+  --simulationLength N         Number of time steps (at least 1), numbered 0 to N-1.
 
 Optional:
-  --groundFloorProbability N    Integer percentage from 0 to 100. For passengers
+  --groundFloorProbability N   Integer percentage from 0 to 100. For passengers
                                above floor 0, choose destination 0 with this
                                probability; otherwise choose another nonzero floor.
                                Omit for uniformly random valid destinations.
@@ -28,7 +28,7 @@ Optional:
                                Normally one opportunity per epoch; M during an
                                M-times busy period. Passengers have a 10-epoch
                                cooldown. Skip requests when none are available.
-  --busyPeriod START:END:M      Optional, repeatable busy interval [START, END).
+  --busyPeriod START:END:M     Optional, repeatable busy interval [START, END).
                                Each time step has M times normal demand.
                                M must be a positive integer; intervals must be
                                within the simulation and must not overlap.
@@ -208,7 +208,7 @@ command -v shuf >/dev/null || fail "Required command not found: shuf (GNU coreut
 # Advance time, rebuilding the eligible pool as passenger cooldowns expire.
 # Choosing directly from this pool avoids endlessly redrawing unavailable IDs.
 last_request_times=()
-printf 'time,id,source,dest\n'
+printf 'time,passenger_id,source,dest\n'
 for ((time = 0; time < simulation_length; time++)); do
     eligible_passengers=()
     for ((passenger = 1; passenger <= n_passengers; passenger++)); do
