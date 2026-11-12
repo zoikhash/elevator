@@ -68,3 +68,7 @@ door opening/closing times
 elevator speedup/slowdown times - increase amount of quantisation. differing floor heights
 
 If lift is moving fast, cannot stop within X number of floors
+
+elevator capacities
+
+elevator energy usage
