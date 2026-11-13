@@ -105,6 +105,8 @@ See [cbo/README.md](./cbo/README.md) for a constrained route-insertion optimiser
 
 ### Notes
 
+some notes that were collected during the exercise
+
 ```text
 Basement? (shift floors)
 
