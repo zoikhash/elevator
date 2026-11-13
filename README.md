@@ -1,6 +1,6 @@
 # Elevator simulation
 
-This codebase simulates and analyses the operation of an elevator - a pick-up/drop-off problem.
+This codebase simulates and analyses the operation of an elevator; a pick-up/drop-off problem.
 
 ## Quickstart
 
@@ -59,12 +59,31 @@ You should see output similar to:
 
 ![alt text](./resources/image-1.png)
 
+You should see a noticiable increase in wait times when express elevators routes are configured.
+
 ## Time spent
 
 3 hours
 
 ## Assumptions, simplifications, trade-offs
 
+- No lookahead: only waiting and onboard passengers influence decisions
+- Destinations are known when requested, allowing express eligibility to check both endpoints
+- Simple physics: one floor per epoch, instantaneous direction changes, no acceleration or braking
+- Simple stops: boarding/alighting holds an elevator for exactly one epoch, regardless of passenger count
+- Uniform passengers: each consumes one capacity slot; no priorities, accessibility requirements, or transfers
+
+**Fairness** isn’t guaranteed: there’s no oldest-request-first rule or maximum-wait constraint.
+
+| Decision | Benefit | Limitation |
+|---|---|---|
+| Assign the nearest eligible elevator | Simple and inexpensive | Distance ignores direction, occupancy, queued work, and actual pickup ETA |
+| Keep assignments “sticky” | Avoids passengers constantly switching elevators | Doesn’t rebalance when another elevator becomes a better choice |
+| Move toward the nearest assigned stop | Responds quickly to nearby demand | Can reverse direction repeatedly or postpone distant stops |
+| Ignore pickups while full | Prioritises delivering onboard passengers | Capacity isn’t reserved when assigning requests |
+| Idle wherever work finishes | Avoids unnecessary movement | Doesn’t reposition idle elevators to improve coverage |
+
+This implementation favours simplicity, low computational cost and understandable code.
 
 ## Future
 
@@ -80,7 +99,7 @@ Another area of interest is elevator safety: Elevators are safety-critical syste
 
 ## Constraint-based optimisation approach
 
-See [cbo/README.md](./cbo/README.md) for a constrained route-insertion optimizer.
+See [cbo/README.md](./cbo/README.md) for a constrained route-insertion optimiser.
 
 ```bash
 cd cbo
@@ -89,7 +108,7 @@ cargo run --release --manifest-path Cargo.toml -- --global --solver-seconds 5
 
 This reads `input.csv` and stores an optimised elevator position route log in `cbo/out/elevator_positions_log.csv`. 
 
-By default, it uses a heuristic, not a globally optimal solver. Add `-- --global` to jointly optimize currently known requests using branch-and-bound, with a (default) 60-second limit per arrival-epoch solve and explicit optimality status. It never considers future arrivals (look-ahead).
+By default, it uses a heuristic, not a globally optimal solver. Add `-- --global` to jointly optimise currently known requests using branch-and-bound, with a (default) 60-second limit per arrival-epoch solve and explicit optimality status. It never considers future arrivals (look-ahead).
 
 ---
 
