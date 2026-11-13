@@ -101,15 +101,6 @@ Another area of interest is elevator safety: Elevators are safety-critical syste
 
 See [cbo/README.md](./cbo/README.md) for a constrained route-insertion optimiser.
 
-```bash
-cd cbo
-cargo run --release --manifest-path Cargo.toml -- --global --solver-seconds 5
-```
-
-This reads `input.csv` and stores an optimised elevator position route log in `cbo/out/elevator_positions_log.csv`. 
-
-By default, it uses a heuristic, not a globally optimal solver. Add `-- --global` to jointly optimise currently known requests using branch-and-bound, with a (default) 60-second limit per arrival-epoch solve and explicit optimality status. It never considers future arrivals (look-ahead).
-
 ---
 
 ### Notes
